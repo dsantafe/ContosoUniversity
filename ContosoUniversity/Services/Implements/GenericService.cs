@@ -29,9 +29,9 @@ namespace ContosoUniversity.Services.Implements
             }
         }
 
-        public List<TEntity> GetAll(int pageIndex, int pageSize)
+        public async Task<List<TEntity>> GetAll()
         {
-            return _genericRepository.GetAll();
+            return await _genericRepository.GetAll();
         }
 
         public async Task<TEntity> GetById(int id)

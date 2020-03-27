@@ -6,7 +6,7 @@ namespace ContosoUniversity.Services
     public interface IGenericService<TEntity>
         where TEntity : class
     {
-        List<TEntity> GetAll(int pageIndex, int pageSize);
+        Task<List<TEntity>> GetAll();
 
         Task<TEntity> GetById(int id);
 

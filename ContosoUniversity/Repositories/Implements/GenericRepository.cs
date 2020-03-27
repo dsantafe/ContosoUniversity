@@ -15,7 +15,7 @@ namespace ContosoUniversity.Repositories.Implements
             _dbContext = dbContext;
         }
 
-        public List<TEntity> GetAll()
+        public Task<List<TEntity>> GetAll()
         {
             return _dbContext.Set<TEntity>().ToListAsync();
         }

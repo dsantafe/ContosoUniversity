@@ -6,7 +6,7 @@ namespace ContosoUniversity.Repositories
     public interface IGenericRepository<TEntity>
          where TEntity : class
     {
-        List<TEntity> GetAll();
+        Task<List<TEntity>> GetAll();
 
         Task<TEntity> GetById(int id);
 
