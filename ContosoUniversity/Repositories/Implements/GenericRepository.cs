@@ -1,50 +1,59 @@
-﻿using ContosoUniversity.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ContosoUniversity.Data;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContosoUniversity.Repositories.Implements
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity>
-           where TEntity : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private readonly SchoolContext _dbContext;
+        private readonly SchoolContext schoolContext;
 
-        public GenericRepository(SchoolContext dbContext)
+        public GenericRepository(SchoolContext schoolContext)
         {
-            _dbContext = dbContext;
+            this.schoolContext = schoolContext;
         }
 
-        public Task<List<TEntity>> GetAll()
+        public int Count()
         {
-            return _dbContext.Set<TEntity>().ToListAsync();
-        }
-
-        public async Task<TEntity> GetById(int id)
-        {
-            return await _dbContext.Set<TEntity>().FindAsync(id);
-        }
-
-        public async Task Insert(TEntity entity)
-        {
-            await _dbContext.Set<TEntity>().AddAsync(entity);
-        }
-
-        public void Update(int id, TEntity entity)
-        {
-            _dbContext.Set<TEntity>().Update(entity);
+            return schoolContext.Set<TEntity>().ToList().Count();
         }
 
         public async Task Delete(int id)
         {
             var entity = await GetById(id);
-            _dbContext.Set<TEntity>().Remove(entity);
+
+            if (entity == null)
+                throw new Exception("The entity is null");
+
+            schoolContext.Set<TEntity>().Remove(entity);
+            await schoolContext.SaveChangesAsync();
+        }
+       
+        public async Task<List<TEntity>> GetAll()
+        {
+            return await schoolContext.Set<TEntity>().ToListAsync();
         }
 
-
-        public async Task Save()
+        public async Task<TEntity> GetById(int id)
         {
-            await _dbContext.SaveChangesAsync();
+            return await schoolContext.Set<TEntity>().FindAsync(id);
+        }
+
+        public async Task<TEntity> Insert(TEntity entity)
+        {
+            await schoolContext.Set<TEntity>().AddAsync(entity);
+            await schoolContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<TEntity> Update(TEntity entity)
+        {
+            schoolContext.Set<TEntity>().Update(entity);
+            await schoolContext.SaveChangesAsync();
+            return entity;
         }
     }
 }

@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using ContosoUniversity.Data;
+using ContosoUniversity.Repositories;
+using ContosoUniversity.Repositories.Implements;
+using ContosoUniversity.Services;
+using ContosoUniversity.Services.Implements;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ContosoUniversity
 {
@@ -35,6 +36,15 @@ namespace ContosoUniversity
 
             services.AddDbContext<SchoolContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+
+            // Repositories            
+            services.AddScoped<IStudentRepository, StudentRepository>();
+
+            // Services
+            services.AddTransient<IStudentService, StudentService>();
+			
+			//AutoMapper
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
