@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using ContosoUniversity.Data;
-using ContosoUniversity.Repositories;
-using ContosoUniversity.Repositories.Implements;
-using ContosoUniversity.Services;
-using ContosoUniversity.Services.Implements;
+using ContosoUniversity.BL.Data;
+using ContosoUniversity.BL.Repositories;
+using ContosoUniversity.BL.Repositories.Implements;
+using ContosoUniversity.BL.Services;
+using ContosoUniversity.BL.Services.Implements;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,11 +39,13 @@ namespace ContosoUniversity
 
             // Repositories            
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
             // Services
             services.AddTransient<IStudentService, StudentService>();
-			
-			//AutoMapper
+            services.AddTransient<IEnrollmentService, EnrollmentService>();
+
+            //AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

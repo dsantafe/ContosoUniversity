@@ -1,4 +1,4 @@
-﻿using ContosoUniversity.Data;
+﻿using ContosoUniversity.BL.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

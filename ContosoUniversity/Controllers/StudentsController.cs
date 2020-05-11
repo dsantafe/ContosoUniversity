@@ -1,10 +1,10 @@
-﻿using ContosoUniversity.Services;
+﻿using AutoMapper;
+using ContosoUniversity.BL.DTOs;
+using ContosoUniversity.BL.Models;
+using ContosoUniversity.BL.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System.Linq;
-using ContosoUniversity.Models;
-using ContosoUniversity.DTOs;
-using AutoMapper;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.Controllers
 {
@@ -20,11 +20,14 @@ namespace ContosoUniversity.Controllers
             this.mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var data = await studentService.GetAll();
 
             var listStudents = data.Select(x => mapper.Map<StudentDTO>(x)).ToList();
+
+            if (id != null)
+                ViewBag.Courses = await studentService.GetCoursesByStudentId(id.Value);
 
             return View(listStudents);
         }
